@@ -44,7 +44,7 @@ host_os_tags:
 # You can find more information about type tags in the Step Development Guideline:
 # https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
 type_tags:
-  - deploy
+  - utility
 
 is_requires_admin_user: true
 is_always_run: false
@@ -53,17 +53,15 @@ run_if: ""
 
 deps:
   brew:
-  - name: git
-  - name: wget
+    - name: git
+    - name: wget
   apt_get:
-  - name: git
-  - name: wget
-
+    - name: git
+    - name: wget
 
 toolkit:
   bash:
     entry_file: step.sh
-
 
 # inputs:
 #   - example_step_input: Default Value - you can leave this empty if you want to
@@ -83,6 +81,6 @@ outputs:
     opts:
       title: "Commit messages."
       summary: Commit messages parsed from between two last git TAGs.
-      description: |
+      description: |-
         Commit massages parsed from between two last git TAGs. If no TAGS are present, it shows default message.
         ID-1234567: Task description
