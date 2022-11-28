@@ -8,11 +8,11 @@
 # - Bitrise CLI guides: http://devcenter.bitrise.io/bitrise-cli/
 
 title: |-
-  Q Release notes
+  Release notes generator
 summary: |
   Step for creating release notes
 description: |
-  This step will create release notes from commit messages with format ID-XXXXXX: xyz.
+  This step will create release notes from commit messages with format ${COMMIT_TAG}-XXXXXX: xyz.
   Commit messages are parsed from between two last git TAGs. If no TAGS are present, it shows default message.
   Example of output: ID-12345678: Task description
 website: https://github.com/Q-Agency/bitrise-step-release-notes
@@ -22,27 +22,6 @@ host_os_tags:
   - osx-10.10
   - ubuntu-16.04
 
-# If this step should be available only for certain project types
-# just uncomment this `project_type_tags` section and include all the
-# project types supported by the step. If the step can be used for all
-# project types then you can just remove this section.
-# If no `project_type_tags` specified (or specified as an empty array)
-# that means the step can be used for any project type.
-# You can find more information about project type tags in the Step Development Guideline:
-# https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
-#
-# project_type_tags:
-#   - ios
-#   - macos
-#   - android
-#   - xamarin
-#   - react-native
-#   - cordova
-#   - ionic
-
-# Type tags are used for categorizing steps, for easier step discovery in Step Libraries.
-# You can find more information about type tags in the Step Development Guideline:
-# https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
 type_tags:
   - utility
 
@@ -63,23 +42,33 @@ toolkit:
   bash:
     entry_file: step.sh
 
-# inputs:
-#   - example_step_input: Default Value - you can leave this empty if you want to
-#     opts:
-#       title: "Example Step Input"
-#       summary: Summary. No more than 2-3 sentences.
-#       description: |
-#         Description of this input.
+inputs:
+  - COMMIT_TAG: ID
+    opts:
+      title: Commit tag
+      summary: Only commits that start with $COMMIT_TAG are used in changelog.
+      description: |-
+        Takes all the commit messages between the last two tags and greps only the commits that start with $COMMIT_TAG
+      is_required: false
 
-#         Can be Markdown formatted text.
-#       is_expand: true
-#       is_required: true
-#       value_options: []
+  - ENVIRNOMENT_TAG: staging
+    opts:
+      title: Environment tag
+      summary: Set to true to update, if Flutter from a matching channel is preinstalled.
+      description: |-
+        Choose the desired tag name:
+        * Setting to `development` will take the last 2 'development' tags.
+        * Setting to `staging` will take the last 2 'staging' tags.
+        * Setting to `production` will take the last 2 'production' tags.
+      value_options:
+        - "development"
+        - "staging"
+        - "production"
 
 outputs:
-  - COMMIT_MESSAGE_CLEAN:
+  - CHANGELOG:
     opts:
-      title: "Commit messages."
+      title: "Changelog"
       summary: Commit messages parsed from between two last git TAGs.
       description: |-
         Commit massages parsed from between two last git TAGs. If no TAGS are present, it shows default message.
