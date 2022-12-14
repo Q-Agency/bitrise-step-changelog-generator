@@ -2,7 +2,7 @@
 # fail if any commands fails
 set -ex
 
-newest_tag=`git tag | grep $ENVIRNOMENT_TAG | tail -n 1`
+newest_tag=`git tag -l | sort -V | grep $ENVIRNOMENT_TAG | tail -n 1`
 if [ -z $newest_tag ]; then
    echo "No $ENVIRNOMENT_TAG tag found."
    exit 1
