@@ -19,4 +19,4 @@ fi
 date=`git log -1 --format=%ai $newest_tag`
 build_number=`echo $newest_tag | cut -d "_" -f 3`
 
-echo "$changelog"
+envman add --key CHANGELOG --value "$changelog"
